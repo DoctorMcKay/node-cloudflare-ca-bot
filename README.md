@@ -10,7 +10,10 @@ automatically renew [Cloudflare Origin CA](https://blog.cloudflare.com/cloudflar
 
 Install [Node.js](https://nodejs.org) v6 or later. Then install it via npm:
 
-    $ sudo npm install -g cloudflare-ca-bot
+    $ sudo npm install -g --unsafe-perm true cloudflare-ca-bot
+    
+The `--unsafe-perm true` argument is required so that the install script can run as root, which is required to create
+directories in `/etc`.
     
 Finally, run it (as any user):
 

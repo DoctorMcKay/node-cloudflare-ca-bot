@@ -7,7 +7,7 @@
 		"cfcabot": "bin/cli.js"
 	},
 	"scripts": {
-		"install": "mkdir /etc/cfcabot /etc/cfcabot/csr /etc/cfcabot/private /etc/cfcabot/cert /etc/cfcabot/latest && chmod 777 /etc/cfcabot -R"
+		"install": "mkdir /etc/cfcabot /etc/cfcabot/csr /etc/cfcabot/private /etc/cfcabot/cert && chmod 777 /etc/cfcabot -R"
 	},
 	"repository": {
 		"type": "git",
