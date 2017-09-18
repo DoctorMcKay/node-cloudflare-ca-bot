@@ -18,6 +18,7 @@ dirs.forEach(mkdir);
 function mkdir(path) {
 	try {
 		FS.mkdirSync(path, 0o777);
+		FS.chmodSync(path, 0o777);
 	} catch (ex) {
 		if (ex.code == 'EEXIST') {
 			// it's okay if it already exists
