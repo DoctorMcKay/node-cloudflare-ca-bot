@@ -8,7 +8,8 @@ automatically renew [Cloudflare Origin CA](https://blog.cloudflare.com/cloudflar
 
 # Installation
 
-Install [Node.js](https://nodejs.org) v6 or later. Then install it via npm:
+Install [Node.js](https://nodejs.org) v6 or later. You will also need `openssl` available on the command line.
+Then install it via npm:
 
     $ sudo npm install -g --unsafe-perm true cloudflare-ca-bot
     
