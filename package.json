@@ -1,0 +1,21 @@
+{
+	"name": "cloudflare-ca-bot",
+	"description": "Command-line application to make it easy to provision and automatically renew Cloudflare CA certificates",
+	"version": "1.0.0",
+	"author": "Alex Corn <mckay@doctormckay.com>",
+	"bin": {
+		"cfcabot": "bin/cli.js"
+	},
+	"scripts": {
+		"install": "mkdir /etc/cfcabot /etc/cfcabot/csr /etc/cfcabot/private /etc/cfcabot/cert /etc/cfcabot/latest && chmod 777 /etc/cfcabot -R"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DoctorMcKay/node-cloudflare-ca-bot"
+	},
+	"license": "GPL-3.0",
+	"versions": {
+		"node": ">=6.0.0"
+	},
+	"os": ["linux"]
+}
