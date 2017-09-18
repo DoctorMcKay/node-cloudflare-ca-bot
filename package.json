@@ -1,7 +1,7 @@
 {
 	"name": "cloudflare-ca-bot",
 	"description": "Command-line application to make it easy to provision and automatically renew Cloudflare CA certificates",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"author": "Alex Corn <mckay@doctormckay.com>",
 	"bin": {
 		"cfcabot": "bin/cli.js"
