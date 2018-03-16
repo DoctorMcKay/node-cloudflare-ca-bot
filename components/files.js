@@ -1,9 +1,12 @@
-if (!process.env.HOME) {
-	throw new Error("No HOME environment variable is set. This is required to use cfcabot.");
+let g_ConfigPath = require('../bin/cli.js').program.config;
+let g_StorageRoot = '/etc/cfcabot';
+if (!g_ConfigPath) {
+	if (!process.env.HOME) {
+		throw new Error("--config option not specified and no HOME environment variable is set. One is required to use cfcabot.");
+	} else {
+		g_ConfigPath = process.env.HOME + '/.cfcabot_config.json';
+	}
 }
-
-const CONFIG_PATH = process.env.HOME + '/.cfcabot_config.json';
-const METADATA_PATH = '/etc/cfcabot/meta.json';
 
 const FS = require('fs');
 
@@ -16,8 +19,12 @@ exports.getConfig = function() {
 	}
 
 	try {
-		let file = FS.readFileSync(CONFIG_PATH);
+		let file = FS.readFileSync(g_ConfigPath);
 		g_Config = JSON.parse(file.toString('utf8'));
+		if (g_Config.storageRoot) {
+			g_StorageRoot = g_Config.storageRoot;
+		}
+
 		return g_Config;
 	} catch (ex) {
 		if (ex.code == 'ENOENT') {
@@ -32,16 +39,18 @@ exports.getConfig = function() {
 };
 
 exports.saveConfig = function() {
-	FS.writeFileSync(CONFIG_PATH, JSON.stringify(exports.getConfig(), undefined, "\t"));
+	FS.writeFileSync(g_ConfigPath, JSON.stringify(exports.getConfig(), undefined, "\t"));
 };
 
 exports.getMetadata = function() {
+	exports.getConfig(); // to make sure our storage path is up to date
+
 	if (g_Metadata) {
 		return g_Metadata;
 	}
 
 	try {
-		let file = FS.readFileSync(METADATA_PATH);
+		let file = FS.readFileSync(g_StorageRoot + '/meta.json');
 		g_Metadata = JSON.parse(file.toString('utf8'));
 		return g_Metadata;
 	} catch (ex) {
@@ -57,5 +66,11 @@ exports.getMetadata = function() {
 };
 
 exports.saveMetadata = function() {
-	FS.writeFileSync(METADATA_PATH, JSON.stringify(exports.getMetadata(), undefined, "\t"));
+	exports.getConfig(); // to make sure our storage path is up to date
+	FS.writeFileSync(g_StorageRoot + '/meta.json', JSON.stringify(exports.getMetadata(), undefined, "\t"));
+};
+
+exports.getStorageRoot = function() {
+	exports.getConfig();
+	return g_StorageRoot;
 };

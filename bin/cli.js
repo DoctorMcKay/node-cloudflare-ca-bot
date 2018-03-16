@@ -1,25 +1,40 @@
 #!/usr/bin/env node
 
-const CLI = require('../components/cli-prompt.js');
+let program = require('commander');
+exports.program = program;
 
-const args = process.argv.slice(2);
+program.version(require('../package.json').version, '-v, --version')
+	.option('--config <path>', 'Set path to config json file. Defaults to $HOME/.cfcabot_config.json');
 
-let command = args[0] && args[0].toLowerCase();
-let flags = (args.length > 1 ? args.slice(1) : []).map(flag => flag.toLowerCase());
+program.command('apikey [key]')
+	.description('Set or update your Cloudflare CA API key')
+	.action((key, options) => {
+		require('../commands/apikey.js').execute(options, key);
+	});
 
-try {
-	require('../commands/' + command + '.js').execute(flags);
-} catch (ex) {
-	if (ex.message.indexOf("Cannot find module") === 0) {
-		console.log("Usage: cfcabot <command> [flags]");
-		console.log("  Available commands:");
-		console.log("    - apikey: Set or update your Cloudflare CA API key");
-		console.log("    - list: List all certificates known to this machine (all these certs will be renewed when you use \"renew\")");
-		console.log("    - new: Interactively get a new certificate");
-		console.log("    - renew: Non-interactively renew all certificates that need renewal");
-		console.log("        Use --force flag to force renewal of all certificates regardless of whether renewal is needed");
-		console.log("    - revoke: Interactively revoke a certificate");
-	} else {
-		throw ex;
-	}
-}
+program.command('list')
+	.description('List all certificates known to this machine (all these certs will be renewed when you use "renew")')
+	.action((options) => {
+		require('../commands/list.js').execute(options);
+	});
+
+program.command('new')
+	.description('Interactively get a new certificate')
+	.action((options) => {
+		require('../commands/new.js').execute(options);
+	});
+
+program.command('renew')
+	.description('Non-interactively renew all certificates that need renewal')
+	.option('--force', 'Force renewal of all certificates regardless of whether renewal is needed')
+	.action((options) => {
+		require('../commands/renew.js').execute(options);
+	});
+
+program.command('revoke')
+	.description('Interactively revoke a certificate')
+	.action((options) => {
+		require('../commands/revoke.js').execute(options);
+	});
+
+program.parse(process.argv);

@@ -17,5 +17,8 @@
 	"versions": {
 		"node": ">=6.0.0"
 	},
-	"os": ["linux"]
+	"os": ["linux"],
+	"dependencies": {
+		"commander": "^2.15.0"
+	}
 }

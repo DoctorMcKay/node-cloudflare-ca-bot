@@ -3,7 +3,12 @@ const rl = ReadLine.createInterface(process.stdin, process.stdout);
 
 rl.pause();
 
-exports.question = function(prompt, callback) {
+exports.question = function(prompt, callback, alreadyKnownValue) {
+	if (alreadyKnownValue) {
+		callback(alreadyKnownValue);
+		return;
+	}
+
 	rl.question(prompt, (response) => {
 		rl.pause();
 		callback(response);

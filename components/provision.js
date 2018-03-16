@@ -4,7 +4,7 @@ const FS = require('fs');
 const API = require('./api.js');
 const Files = require('./files.js');
 
-const DATA_BASE_PATH = '/etc/cfcabot';
+const DATA_BASE_PATH = Files.getStorageRoot();
 const KEY_PATH = DATA_BASE_PATH + '/private';
 const CSR_PATH = DATA_BASE_PATH + '/csr';
 const CERT_PATH = DATA_BASE_PATH + '/cert';
@@ -14,8 +14,11 @@ exports.provision = function(domains, callback) {
 	let identity = domains[0];
 	let now = Date.now();
 
+	mkdir(KEY_PATH);
 	mkdir(KEY_PATH + '/' + identity);
+	mkdir(CSR_PATH);
 	mkdir(CSR_PATH + '/' + identity);
+	mkdir(CERT_PATH);
 	mkdir(CERT_PATH + '/' + identity);
 
 	let archiveKeyPath = KEY_PATH + '/' + identity + '/' + now + '.pem';

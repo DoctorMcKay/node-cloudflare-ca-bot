@@ -5,7 +5,7 @@ const RENEW_THRESHOLD = 14; // renew when expiring in 14 days
 
 exports.execute = function(flags) {
 	let meta = Files.getMetadata();
-	let force = flags.includes('--force');
+	let force = flags.force;
 
 	if (force) {
 		console.log("Forcefully renewing all certificates...");
